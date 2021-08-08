@@ -2,14 +2,14 @@ package com.lacolinares.jetpicexpress.presentation.ui.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.lacolinares.jetpicexpress.R
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeButtonMenu
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterBottomContent
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterTopContent
@@ -30,20 +30,24 @@ fun HomeScreen(
 }
 
 @Composable
-private fun TopContent(boxScope: BoxScope){
+private fun TopContent(boxScope: BoxScope) {
     boxScope.apply {
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 48.dp, end = 16.dp)
         ) {
-            Icon(Icons.Rounded.Info, contentDescription = "about", tint = Light200)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_info_24),
+                contentDescription = "about",
+                tint = Light200
+            )
         }
     }
 }
 
 @Composable
-private fun MainContent(){
+private fun MainContent() {
     HomeImageSlider()
 }
 
