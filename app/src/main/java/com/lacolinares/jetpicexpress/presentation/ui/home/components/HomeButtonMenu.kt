@@ -16,11 +16,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lacolinares.jetpicexpress.R
+import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
+import com.lacolinares.jetpicexpress.util.navigation.Screen
 
 @Composable
-fun HomeButtonMenu() {
+fun HomeButtonMenu(
+    navigator: AppNavigator
+) {
     val editButtonColor = ButtonDefaults.buttonColors(
         backgroundColor = colorResource(id = R.color.teal_200),
     )
@@ -37,7 +41,7 @@ fun HomeButtonMenu() {
             buttonBackgroundColor = editButtonColor,
             modifier = modifier.padding(end = 8.dp)
         ) {
-            Log.d("Button", "Edit Button Clicked!")
+            navigator.navigateTo(route = Screen.EditImageScreen.route)
         }
 
         Button(

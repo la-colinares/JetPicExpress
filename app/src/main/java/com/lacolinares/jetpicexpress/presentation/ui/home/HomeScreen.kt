@@ -7,25 +7,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.lacolinares.jetpicexpress.R
+import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeButtonMenu
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterBottomContent
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterTopContent
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeImageSlider
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
+import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navigator: AppNavigator
 ) {
+    navigator.activity.setTransparentStatusBar()
     Box {
         MainContent()
         TopContent(this)
-        BottomContent(this)
+        BottomContent(this, navigator)
     }
 }
 
@@ -52,7 +54,10 @@ private fun MainContent() {
 }
 
 @Composable
-private fun BottomContent(boxScope: BoxScope) {
+private fun BottomContent(
+    boxScope: BoxScope,
+    navigator: AppNavigator
+) {
     boxScope.apply {
         Column(
             modifier = Modifier
@@ -61,7 +66,7 @@ private fun BottomContent(boxScope: BoxScope) {
         ) {
             HomeFooterTopContent()
             Spacer(modifier = Modifier.height(24.dp))
-            HomeButtonMenu()
+            HomeButtonMenu(navigator = navigator)
             Spacer(modifier = Modifier.height(48.dp))
             HomeFooterBottomContent()
         }

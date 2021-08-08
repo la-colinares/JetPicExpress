@@ -7,40 +7,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.lacolinares.jetpicexpress.R
+import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.util.Constants
 import com.lacolinares.jetpicexpress.util.navigation.Screen
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(
-    navController: NavController,
-    dispatcher: CoroutineDispatcher = Dispatchers.Main
+    navigator: AppNavigator
 ) {
-    LaunchedEffect(key1 = true) {
-        withContext(dispatcher) {
-            delay(Constants.SPLASH_SCREEN_DELAY)
-            with(navController) {
-                popBackStack()
-                navigate(Screen.HomeScreen.route)
-            }
-        }
-    }
+    navigator.navigateWithDelay(
+        route = Screen.HomeScreen.route,
+        delay = Constants.SPLASH_SCREEN_DELAY,
+        pop = true
+    )
 
     DisplayLogo()
 }
 
 @Composable
-private fun DisplayLogo(){
+private fun DisplayLogo() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
