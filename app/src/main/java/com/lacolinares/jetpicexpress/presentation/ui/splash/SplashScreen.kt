@@ -12,15 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.lacolinares.jetpicexpress.R
-import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.util.Constants
+import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 import com.lacolinares.jetpicexpress.util.navigation.Screen
 
 @Composable
 fun SplashScreen(
     navigator: AppNavigator
 ) {
-    navigator.navigateWithDelay(
+    navigator.NavigateWithDelay(
         route = Screen.HomeScreen.route,
         delay = Constants.SPLASH_SCREEN_DELAY,
         pop = true

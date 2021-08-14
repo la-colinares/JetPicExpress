@@ -9,13 +9,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.lacolinares.jetpicexpress.R
-import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeButtonMenu
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterBottomContent
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeFooterTopContent
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeImageSlider
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
+import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 
 
 @OptIn(ExperimentalPagerApi::class)

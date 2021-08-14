@@ -1,4 +1,4 @@
-package com.lacolinares.jetpicexpress.presentation.ui
+package com.lacolinares.jetpicexpress.util.navigation
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
@@ -14,7 +14,7 @@ open class AppNavigator(
 ) {
 
     @Composable
-    open fun navigate(route: String, pop: Boolean = false) {
+    open fun Navigate(route: String, pop: Boolean = false) {
         LaunchedEffect(key1 = true) {
             withContext(Dispatchers.Main) {
                 with(navController) {
@@ -33,7 +33,7 @@ open class AppNavigator(
     }
 
     @Composable
-    open fun navigateWithDelay(route: String, delay: Long, pop: Boolean = false) {
+    open fun NavigateWithDelay(route: String, delay: Long, pop: Boolean = false) {
         LaunchedEffect(key1 = true) {
             withContext(Dispatchers.Main) {
                 with(navController) {

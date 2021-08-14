@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import com.lacolinares.jetpicexpress.presentation.ui.theme.JetPicExpressTheme
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
 import com.lacolinares.jetpicexpress.util.navigation.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

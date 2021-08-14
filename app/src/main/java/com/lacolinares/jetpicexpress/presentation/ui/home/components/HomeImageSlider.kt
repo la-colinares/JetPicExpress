@@ -39,7 +39,8 @@ fun HomeImageSlider() {
 
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        dragEnabled = false
     ) { page: Int ->
         SliderImage(image = images[page])
     }

@@ -16,9 +16,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lacolinares.jetpicexpress.R
-import com.lacolinares.jetpicexpress.presentation.ui.AppNavigator
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
+import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 import com.lacolinares.jetpicexpress.util.navigation.Screen
 
 @Composable
