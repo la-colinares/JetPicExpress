@@ -19,7 +19,14 @@ class EditImageViewModel @Inject constructor(
     private val imageFilterDataState = MutableStateFlow(ImageFilterState())
     val imageFilterUIState: StateFlow<ImageFilterState> get() = imageFilterDataState
 
-    fun loadImageFilter(origImage: Bitmap) {
+    private val _filteredBitmap = MutableStateFlow<Bitmap?>(null)
+    val filteredBitmap : StateFlow<Bitmap?> get() = _filteredBitmap
+
+    fun setFilteredBitmap(filteredBitmap: Bitmap){
+        _filteredBitmap.value = filteredBitmap
+    }
+
+    fun loadImageFilters(origImage: Bitmap) {
         CoroutineThread.io {
             kotlin.runCatching {
                 emitImageFilterUIState(isLoading = true)

@@ -6,15 +6,18 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -28,11 +31,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.lacolinares.jetpicexpress.R
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark700
+import com.lacolinares.jetpicexpress.presentation.ui.theme.DarkTransparent
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Teal200
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
 import com.lacolinares.jetpicexpress.util.extensions.uriToBitmap
 import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -44,7 +49,10 @@ fun EditImageScreen(
     val context = LocalContext.current
     navigator.activity.setTransparentStatusBar(false)
 
+    val gpuImage = GPUImage(context)
+
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -64,17 +72,30 @@ fun EditImageScreen(
     }
 
     imageBitmap?.let {
-        MainContent(bitmap = it, viewModel = viewModel)
+        viewModel.setFilteredBitmap(it)
+        MainContent(
+            originalBitmap = it,
+            gpuImage = gpuImage,
+            viewModel = viewModel
+        )
     }
 }
 
 @Composable
-fun MainContent(bitmap: Bitmap, viewModel: EditImageViewModel) {
+fun MainContent(
+    originalBitmap: Bitmap,
+    gpuImage: GPUImage,
+    viewModel: EditImageViewModel
+) {
+    gpuImage.setImage(originalBitmap)
+    viewModel.loadImageFilters(originalBitmap)
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .background(Light200)
     ) {
+        //region:: Constraint Setup
         val (topContent, midContent, bottomContent) = createRefs()
 
         val topModifier = Modifier.constrainAs(topContent) {
@@ -96,20 +117,35 @@ fun MainContent(bitmap: Bitmap, viewModel: EditImageViewModel) {
 
         val bottomModifier = Modifier.constrainAs(bottomContent) {
             width = Dimension.fillToConstraints
-            height = Dimension.value(150.dp)
+            height = Dimension.value(120.dp)
             bottom.linkTo(parent.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
+        //endregion
 
         TopContent(topModifier)
-        MidContent(viewModel = viewModel, bitmap = bitmap, modifier = midModifier)
-        BottomContent(viewModel = viewModel, modifier = bottomModifier)
+        val filteredBitmap = viewModel.filteredBitmap.collectAsState().value
+        filteredBitmap?.let{
+            MidContent(
+                bitmap = it,
+                modifier = midModifier
+            )
+        }
+        BottomContent(
+            viewModel = viewModel,
+            gpuImage = gpuImage,
+            modifier = bottomModifier
+        )
     }
 }
 
 @Composable
-private fun BottomContent(viewModel: EditImageViewModel, modifier: Modifier) {
+private fun BottomContent(
+    viewModel: EditImageViewModel,
+    gpuImage: GPUImage,
+    modifier: Modifier
+) {
     val imageFilters = viewModel
         .imageFilterUIState
         .collectAsState()
@@ -125,81 +161,93 @@ private fun BottomContent(viewModel: EditImageViewModel, modifier: Modifier) {
                 ImageFilter(
                     image = imageFilter.filterPreview,
                     filterName = imageFilter.name
-                )
+                ) {
+                    with(imageFilter) {
+                        gpuImage.setFilter(filter)
+                        viewModel.setFilteredBitmap(gpuImage.bitmapWithFilterApplied)
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ImageFilter(image: Bitmap, filterName: String) {
-    Column(
+private fun ImageFilter(
+    image: Bitmap,
+    filterName: String,
+    onClick: () -> Unit
+) {
+    Box(
         modifier = Modifier
-            .width(80.dp)
+            .width(90.dp)
             .background(Light200)
-            .padding(top = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(6.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(enabled = true) {
+                onClick.invoke()
+            }
     ) {
         Image(
             bitmap = image.asImageBitmap(),
             contentDescription = "filter image",
             modifier = Modifier
                 .height(120.dp)
-                .width(80.dp)
-                .padding(start = 1.dp, end = 1.dp),
+                .fillMaxWidth(),
             alignment = Alignment.Center,
             contentScale = ContentScale.FillBounds
         )
         Text(
             text = filterName,
-            color = Color.DarkGray,
+            color = Light200,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
-            textAlign = TextAlign.Center
+                .background(DarkTransparent)
+                .align(Alignment.BottomCenter),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp
         )
     }
 }
 
 @Preview(name = "Filter")
 @Composable()
-fun Test(){
-    Column(
+fun ImageFilterPreview() {
+    Box(
         modifier = Modifier
-            .width(80.dp)
+            .width(90.dp)
             .background(Light200)
-            .padding(top = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(6.dp)
+            .clip(RoundedCornerShape(8.dp))
     ) {
         Image(
-            painter = painterResource(id = R.drawable.slider_one),
+            painter = painterResource(id = R.drawable.slider_three),
             contentDescription = "filter image",
             modifier = Modifier
                 .height(120.dp)
-                .width(80.dp)
-                .padding(start = 1.dp, end = 1.dp),
+                .width(90.dp)
+            ,
             alignment = Alignment.Center,
             contentScale = ContentScale.FillBounds
         )
         Text(
             text = "Test",
-            color = Color.DarkGray,
+            color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
-            textAlign = TextAlign.Center
+                .background(DarkTransparent)
+                .align(Alignment.BottomCenter),
+            textAlign = TextAlign.Center,
+            fontSize = 10.sp
         )
     }
 }
 
 @Composable
 private fun MidContent(
-    viewModel: EditImageViewModel,
     bitmap: Bitmap,
     modifier: Modifier
 ) {
-    viewModel.loadImageFilter(bitmap)
-
     Box(modifier = modifier.background(Dark700)) {
         Image(
             bitmap = bitmap.asImageBitmap(),

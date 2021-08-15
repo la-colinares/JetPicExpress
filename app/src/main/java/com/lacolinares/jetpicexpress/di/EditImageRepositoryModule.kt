@@ -18,7 +18,7 @@ class EditImageRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideEditImageMapper(): EditImageMapper{
+    fun provideEditImageMapper(): EditImageMapper {
         return EditImageMapperImpl()
     }
 
@@ -27,7 +27,7 @@ class EditImageRepositoryModule {
     fun provideEditImageRepository(
         @ApplicationContext context: Context,
         mapper: EditImageMapper,
-    ) : EditImageRepository{
+    ): EditImageRepository {
         return EditImageRepositoryImpl(context, mapper)
     }
 
