@@ -22,6 +22,15 @@ class EditImageViewModel @Inject constructor(
     private val _filteredBitmap = MutableStateFlow<Bitmap?>(null)
     val filteredBitmap : StateFlow<Bitmap?> get() = _filteredBitmap
 
+    private val _hasSelectedFilter = MutableStateFlow(false)
+    val hasSelectedFilter : StateFlow<Boolean> get() = _hasSelectedFilter
+
+    fun selectedFilter(filterName: String){
+        if (filterName != "Normal"){
+            _hasSelectedFilter.value = true
+        }
+    }
+
     fun setFilteredBitmap(filteredBitmap: Bitmap){
         _filteredBitmap.value = filteredBitmap
     }

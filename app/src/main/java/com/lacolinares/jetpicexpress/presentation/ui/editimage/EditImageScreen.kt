@@ -2,6 +2,8 @@ package com.lacolinares.jetpicexpress.presentation.ui.editimage
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -46,11 +48,11 @@ fun EditImageScreen(
     viewModel: EditImageViewModel,
     navigator: AppNavigator
 ) {
+
     val context = LocalContext.current
     navigator.activity.setTransparentStatusBar(false)
 
     val gpuImage = GPUImage(context)
-
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     val imagePicker = rememberLauncherForActivityResult(
@@ -78,6 +80,15 @@ fun EditImageScreen(
             gpuImage = gpuImage,
             viewModel = viewModel
         )
+    }
+    val hasFilter = viewModel.hasSelectedFilter.collectAsState().value
+    BackHandler{
+        if (hasFilter){
+            Log.d("OnBackPressed: ", "(Has Filter: $hasFilter)")
+        }else{
+            Log.d("OnBackPressed: ", "(Has Filter: $hasFilter)")
+            navigator.pop()
+        }
     }
 }
 
@@ -124,9 +135,11 @@ fun MainContent(
         }
         //endregion
 
-        TopContent(topModifier)
+        TopContent(
+            modifier =  topModifier
+        )
         val filteredBitmap = viewModel.filteredBitmap.collectAsState().value
-        filteredBitmap?.let{
+        filteredBitmap?.let {
             MidContent(
                 bitmap = it,
                 modifier = midModifier
@@ -165,6 +178,7 @@ private fun BottomContent(
                     with(imageFilter) {
                         gpuImage.setFilter(filter)
                         viewModel.setFilteredBitmap(gpuImage.bitmapWithFilterApplied)
+                        viewModel.selectedFilter(imageFilter.name)
                     }
                 }
             }
@@ -225,8 +239,7 @@ fun ImageFilterPreview() {
             contentDescription = "filter image",
             modifier = Modifier
                 .height(120.dp)
-                .width(90.dp)
-            ,
+                .width(90.dp),
             alignment = Alignment.Center,
             contentScale = ContentScale.FillBounds
         )
@@ -259,9 +272,14 @@ private fun MidContent(
 }
 
 @Composable
-private fun TopContent(modifier: Modifier) {
+private fun TopContent(
+    modifier: Modifier
+) {
     Row(
-        modifier = modifier.background(color = Teal200),
+        modifier = modifier
+            .background(color = Teal200)
+            .clickable(enabled = true) {
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
