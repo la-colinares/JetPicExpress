@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import com.lacolinares.jetpicexpress.data.imagefilter.ImageFilter
 import com.lacolinares.jetpicexpress.data.imagefilter.ImageFilterState
+import com.lacolinares.jetpicexpress.data.savedimage.SavedFilteredImageState
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.repository.EditImageRepository
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,9 @@ class EditImageViewModel @Inject constructor(
     private val imageFilterDataState = MutableStateFlow(ImageFilterState())
     val imageFilterUIState: StateFlow<ImageFilterState> get() = imageFilterDataState
 
+    private val savedImageFilterDataState = MutableStateFlow(SavedFilteredImageState())
+    val savedImageFilterUIState: StateFlow<SavedFilteredImageState> get() = savedImageFilterDataState
+
     private val _filteredBitmap = MutableStateFlow<Bitmap?>(null)
     val filteredBitmap : StateFlow<Bitmap?> get() = _filteredBitmap
 
@@ -33,6 +37,19 @@ class EditImageViewModel @Inject constructor(
 
     fun setFilteredBitmap(filteredBitmap: Bitmap){
         _filteredBitmap.value = filteredBitmap
+    }
+
+    fun saveFilteredImage(){
+        CoroutineThread.io {
+            kotlin.runCatching {
+                emitSavedFilteredImageUIState(isLoading = true)
+                filteredBitmap.value?.let { editImageRepository.saveFilteredImage(it) }
+            }.onSuccess { imageName ->
+                emitSavedFilteredImageUIState(imageName = imageName)
+            }.onFailure {
+                emitSavedFilteredImageUIState(error = it.message.toString())
+            }
+        }
     }
 
     fun loadImageFilters(origImage: Bitmap) {
@@ -64,5 +81,14 @@ class EditImageViewModel @Inject constructor(
     ) {
         val imageFilterState = ImageFilterState(isLoading, imageFilters, error)
         imageFilterDataState.value = imageFilterState
+    }
+
+    private fun emitSavedFilteredImageUIState(
+        isLoading: Boolean = false,
+        imageName: String? = null,
+        error: String? = null
+    ) {
+        val dataState = SavedFilteredImageState(isLoading, imageName, error)
+        savedImageFilterDataState.value = dataState
     }
 }

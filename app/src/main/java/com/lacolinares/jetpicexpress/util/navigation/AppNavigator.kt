@@ -4,9 +4,8 @@ import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
-import kotlinx.coroutines.Dispatchers
+import com.lacolinares.jetpicexpress.util.CoroutineThread
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 open class AppNavigator(
     val activity: Activity,
@@ -16,7 +15,7 @@ open class AppNavigator(
     @Composable
     open fun Navigate(route: String, pop: Boolean = false) {
         LaunchedEffect(key1 = true) {
-            withContext(Dispatchers.Main) {
+            CoroutineThread.main {
                 with(navController) {
                     if (pop) popBackStack()
                     navigate(route = route)
@@ -35,7 +34,7 @@ open class AppNavigator(
     @Composable
     open fun NavigateWithDelay(route: String, delay: Long, pop: Boolean = false) {
         LaunchedEffect(key1 = true) {
-            withContext(Dispatchers.Main) {
+            CoroutineThread.main {
                 with(navController) {
                     delay(delay)
                     if (pop) popBackStack()

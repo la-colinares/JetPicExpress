@@ -4,7 +4,7 @@
 
     <application
         android:name=".BaseApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/jetpic_dark_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/jetpic_dark_icon"
         android:supportsRtl="true"
@@ -20,6 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path"/>
+        </provider>
     </application>
 
 </manifest>
