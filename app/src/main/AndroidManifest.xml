@@ -6,7 +6,7 @@
         android:name=".BaseApp"
         android:icon="@mipmap/jetpic_dark_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/jetpic_dark_icon"
+        android:roundIcon="@mipmap/jetpic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JetPicExpress.NoActionBar"
         android:usesCleartextTraffic="true">
