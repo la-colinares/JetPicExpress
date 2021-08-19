@@ -56,9 +56,11 @@ fun EditImageMainContent(
         }
         //endregion
 
+        val hasFilteredImage = viewModel.hasSelectedFilter.collectAsState()
         EditImageTopContent(
-            modifier =  topModifier
-        ){
+            hasFilteredImage = hasFilteredImage.value,
+            modifier = topModifier
+        ) {
             viewModel.saveFilteredImage()
         }
         val filteredBitmap = viewModel.filteredBitmap.collectAsState()

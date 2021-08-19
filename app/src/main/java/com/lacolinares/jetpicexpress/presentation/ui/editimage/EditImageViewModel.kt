@@ -30,9 +30,7 @@ class EditImageViewModel @Inject constructor(
     val hasSelectedFilter : StateFlow<Boolean> get() = _hasSelectedFilter
 
     fun selectedFilter(filterName: String){
-        if (filterName != "Normal"){
-            _hasSelectedFilter.value = true
-        }
+        _hasSelectedFilter.value = filterName != "Normal"
     }
 
     fun setFilteredBitmap(filteredBitmap: Bitmap){

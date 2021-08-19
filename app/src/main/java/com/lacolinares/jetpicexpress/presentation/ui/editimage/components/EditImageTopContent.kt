@@ -17,6 +17,7 @@ import com.lacolinares.jetpicexpress.presentation.ui.theme.Teal200
 
 @Composable
 fun EditImageTopContent(
+    hasFilteredImage: Boolean,
     modifier: Modifier,
     onClick: () -> Unit,
 ) {
@@ -38,14 +39,16 @@ fun EditImageTopContent(
             )
         },
         actions = {
-            IconButton(
-                onClick = { onClick.invoke() }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle_24),
-                    contentDescription = "back icon",
-                    tint = Light200,
-                )
+            if (hasFilteredImage){
+                IconButton(
+                    onClick = { onClick.invoke() }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_check_circle_24),
+                        contentDescription = "back icon",
+                        tint = Light200,
+                    )
+                }
             }
         },
         backgroundColor = Teal200,

@@ -49,7 +49,7 @@ fun Navigation(activity: Activity) {
             )
         ){ entry ->
             val imageName = entry.arguments?.getString(PARAM_IMAGE_NAME).orEmpty()
-            SavedImageScreen(imageName = imageName)
+            SavedImageScreen(savedImageName = imageName, navigator = navigator)
         }
     }
 }
