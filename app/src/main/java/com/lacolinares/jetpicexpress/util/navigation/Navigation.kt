@@ -1,14 +1,20 @@
 package com.lacolinares.jetpicexpress.util.navigation
 
 import android.app.Activity
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.NamedNavArgument
 import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageScreen
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
 import com.lacolinares.jetpicexpress.presentation.ui.home.HomeScreen
@@ -22,32 +28,31 @@ private const val PARAM_IMAGE_NAME = "imgName"
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(activity: Activity) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
 
     val navigator = AppNavigator(
         activity = activity,
         navController = navController
     )
-
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
-    ){
-        composable(Screen.SplashScreen.route){
+    ) {
+        customComposable(Screen.SplashScreen.route,) {
             SplashScreen(navigator = navigator)
         }
-        composable(Screen.HomeScreen.route){
+        customComposable(Screen.HomeScreen.route,) {
             HomeScreen(navigator = navigator)
         }
-        composable(Screen.ViewImagesScreen.route){
+        customComposable(Screen.ViewImagesScreen.route) {
             val viewImagesViewModel = hiltViewModel<ViewImagesViewModel>()
             ViewImagesScreen(viewModel = viewImagesViewModel, navigator = navigator)
         }
-        composable(Screen.EditImageScreen.route){
+        customComposable(Screen.EditImageScreen.route) {
             val editImageViewModel = hiltViewModel<EditImageViewModel>()
             EditImageScreen(viewModel = editImageViewModel, navigator = navigator)
         }
-        composable(
+        customComposable(
             route = "${Screen.SavedFilterImageScreen.route}/{$PARAM_IMAGE_NAME}",
             arguments = listOf(
                 navArgument(PARAM_IMAGE_NAME) {
@@ -55,9 +60,58 @@ fun Navigation(activity: Activity) {
                     defaultValue = "empty"
                 }
             )
-        ){ entry ->
+        ) { entry ->
             val imageName = entry.arguments?.getString(PARAM_IMAGE_NAME).orEmpty()
             SavedImageScreen(savedImageName = imageName, navigator = navigator)
         }
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.customComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable (NavBackStackEntry) -> Unit
+) {
+    val offSetX = 300
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = { _, _ -> slideInHorizontally(
+            initialOffsetX = { offSetX },
+            animationSpec = tween(
+                durationMillis = offSetX,
+                easing = FastOutSlowInEasing
+            )
+        ) + fadeIn(animationSpec = tween(offSetX)) },
+        exitTransition = { _, _ ->
+            slideOutHorizontally(
+                targetOffsetX = { -offSetX },
+                animationSpec = tween(
+                    durationMillis = offSetX,
+                    easing = FastOutSlowInEasing
+                )
+            ) + fadeOut(animationSpec = tween(offSetX))
+        },
+        popEnterTransition = { _, _ ->
+            slideInHorizontally(
+                initialOffsetX = { -offSetX },
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = FastOutSlowInEasing
+                )
+            ) + fadeIn(animationSpec = tween(offSetX))
+        },
+        popExitTransition = { _, _ -> slideOutHorizontally(
+            targetOffsetX = { offSetX },
+            animationSpec = tween(
+                durationMillis = offSetX,
+                easing = FastOutSlowInEasing
+            )
+        ) + fadeOut(animationSpec = tween(offSetX)) }
+    ) {
+        content.invoke(it)
     }
 }
