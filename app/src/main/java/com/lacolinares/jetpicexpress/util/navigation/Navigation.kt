@@ -13,6 +13,8 @@ import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewMode
 import com.lacolinares.jetpicexpress.presentation.ui.home.HomeScreen
 import com.lacolinares.jetpicexpress.presentation.ui.savedimage.SavedImageScreen
 import com.lacolinares.jetpicexpress.presentation.ui.splash.SplashScreen
+import com.lacolinares.jetpicexpress.presentation.ui.viewimages.ViewImagesScreen
+import com.lacolinares.jetpicexpress.presentation.ui.viewimages.ViewImagesViewModel
 
 private const val PARAM_IMAGE_NAME = "imgName"
 
@@ -34,6 +36,10 @@ fun Navigation(activity: Activity) {
         }
         composable(Screen.HomeScreen.route){
             HomeScreen(navigator = navigator)
+        }
+        composable(Screen.ViewImagesScreen.route){
+            val viewImagesViewModel = hiltViewModel<ViewImagesViewModel>()
+            ViewImagesScreen(viewModel = viewImagesViewModel, navigator = navigator)
         }
         composable(Screen.EditImageScreen.route){
             val editImageViewModel = hiltViewModel<EditImageViewModel>()

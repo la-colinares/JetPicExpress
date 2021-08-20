@@ -48,7 +48,7 @@ fun SavedImageTopContent(
 }
 
 @Composable
-private fun ColumnScope.ShareButton(
+private fun ShareButton(
     uri: Uri
 ){
     val context = LocalContext.current

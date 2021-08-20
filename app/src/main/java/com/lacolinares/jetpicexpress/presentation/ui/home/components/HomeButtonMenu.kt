@@ -1,6 +1,5 @@
 package com.lacolinares.jetpicexpress.presentation.ui.home.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,7 +47,7 @@ fun HomeButtonMenu(
             text = "View Images",
             modifier = modifier.padding(start = 8.dp)
         ) {
-            Log.d("Button", "View Button Clicked!")
+            navigator.navigateTo(route = Screen.ViewImagesScreen.route)
         }
     }
 }
