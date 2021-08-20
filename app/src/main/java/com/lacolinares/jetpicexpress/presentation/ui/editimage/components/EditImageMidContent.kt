@@ -12,9 +12,9 @@ import androidx.compose.ui.layout.ContentScale
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark700
-import com.lacolinares.jetpicexpress.presentation.ui.theme.White800
+import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonMask
+import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonShimmer
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import kotlinx.coroutines.delay
 
@@ -34,9 +34,9 @@ fun EditImageMidContent(
                 .placeholder(
                     visible = isVisible,
                     highlight = PlaceholderHighlight.shimmer(
-                        highlightColor = Dark200
+                        highlightColor = SkeletonShimmer
                     ),
-                    color = White800
+                    color = SkeletonMask
                 ),
             contentScale = ContentScale.FillBounds
         )

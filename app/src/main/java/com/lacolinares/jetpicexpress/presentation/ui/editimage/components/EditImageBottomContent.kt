@@ -23,10 +23,10 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
-import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.DarkTransparent
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
-import com.lacolinares.jetpicexpress.presentation.ui.theme.White800
+import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonMask
+import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonShimmer
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.coroutines.delay
@@ -80,9 +80,9 @@ private fun ImageFilter(
             .placeholder(
                 visible = isVisible,
                 highlight = PlaceholderHighlight.shimmer(
-                    highlightColor = Dark200
+                    highlightColor = SkeletonShimmer
                 ),
-                color = White800
+                color = SkeletonMask
             )
             .clickable(enabled = true) {
                 onClick.invoke()
