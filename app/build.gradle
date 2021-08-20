@@ -61,7 +61,10 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.1'
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha06"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
-    implementation "com.google.accompanist:accompanist-pager:0.16.0"
+
+    implementation "com.google.accompanist:accompanist-pager:$accompanist"
+    implementation "com.google.accompanist:accompanist-placeholder:$accompanist"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist"
 
     //ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

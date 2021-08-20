@@ -1,6 +1,7 @@
 package com.lacolinares.jetpicexpress.util.navigation
 
 import android.app.Activity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -18,6 +19,7 @@ import com.lacolinares.jetpicexpress.presentation.ui.viewimages.ViewImagesViewMo
 
 private const val PARAM_IMAGE_NAME = "imgName"
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(activity: Activity) {
     val navController = rememberNavController()

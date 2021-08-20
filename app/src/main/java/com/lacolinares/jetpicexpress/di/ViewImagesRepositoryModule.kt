@@ -21,5 +21,4 @@ class ViewImagesRepositoryModule {
     ): ViewImagesRepository {
         return ViewImagesRepositoryImpl(context)
     }
-
 }
