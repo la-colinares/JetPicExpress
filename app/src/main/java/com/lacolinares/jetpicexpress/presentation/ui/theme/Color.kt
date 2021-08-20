@@ -9,5 +9,6 @@ val Dark200 = Color(0xFF263238)
 val Dark700 = Color(0xFF000A12)
 
 val Teal200 = Color(0xFF21615D)
+val White800 = Color(0xFFE6E6E6)
 
 val DarkTransparent = Color(0x9E000000)

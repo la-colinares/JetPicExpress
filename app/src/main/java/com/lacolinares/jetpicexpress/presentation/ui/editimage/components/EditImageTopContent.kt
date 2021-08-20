@@ -5,22 +5,25 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lacolinares.jetpicexpress.R
+import com.lacolinares.jetpicexpress.presentation.base.basecomponents.AppAlertDialog
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Teal200
+import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 
 @Composable
 fun EditImageTopContent(
     hasFilteredImage: Boolean,
     modifier: Modifier,
-    onClick: () -> Unit,
+    navigator: AppNavigator,
+    onSave: () -> Unit
 ) {
+    var isBack by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Text(
@@ -31,17 +34,23 @@ fun EditImageTopContent(
         },
         modifier = modifier,
         navigationIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_back_24),
-                contentDescription = "back icon",
-                tint = Light200,
-                modifier = Modifier.padding(start = 12.dp)
-            )
+            IconButton(
+                onClick = {
+                    isBack = true
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_back_24),
+                    contentDescription = "back icon",
+                    tint = Light200,
+                    modifier = Modifier.padding(start = 12.dp)
+                )
+            }
         },
         actions = {
-            if (hasFilteredImage){
+            if (hasFilteredImage) {
                 IconButton(
-                    onClick = { onClick.invoke() }
+                    onClick = { onSave.invoke() }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_check_circle_24),
@@ -54,39 +63,23 @@ fun EditImageTopContent(
         backgroundColor = Teal200,
         elevation = 4.dp
     )
-}
 
-@Preview(showSystemUi = false)
-@Composable
-fun EditImageTopContentPreview() {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Apply Filter",
-                color = Light200,
-                fontSize = 18.sp
+    if (isBack) {
+        if (hasFilteredImage) {
+            AppAlertDialog(
+                confirmButtonText = "Yes",
+                dismissButtonText = "Cancel",
+                message = "Do you want to discard changes?",
+                onConfirm = {
+                    navigator.pop()
+                },
+                onDismiss = {
+                    isBack = false
+                }
             )
-        },
-        navigationIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_back_24),
-                contentDescription = "back icon",
-                tint = Light200,
-                modifier = Modifier.padding(start = 12.dp)
-            )
-        },
-        actions = {
-            IconButton(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle_24),
-                    contentDescription = "back icon",
-                    tint = Light200,
-                )
-            }
-        },
-        backgroundColor = Teal200,
-        elevation = 4.dp
-    )
+        } else {
+            navigator.pop()
+            isBack = false
+        }
+    }
 }

@@ -11,13 +11,15 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
+import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 import jp.co.cyberagent.android.gpuimage.GPUImage
 
 @Composable
 fun EditImageMainContent(
     originalBitmap: Bitmap,
     gpuImage: GPUImage,
-    viewModel: EditImageViewModel
+    viewModel: EditImageViewModel,
+    navigator: AppNavigator
 ) {
     gpuImage.setImage(originalBitmap)
     viewModel.loadImageFilters(originalBitmap)
@@ -59,10 +61,12 @@ fun EditImageMainContent(
         val hasFilteredImage = viewModel.hasSelectedFilter.collectAsState()
         EditImageTopContent(
             hasFilteredImage = hasFilteredImage.value,
-            modifier = topModifier
-        ) {
-            viewModel.saveFilteredImage()
-        }
+            modifier = topModifier,
+            navigator = navigator,
+            onSave = {
+                viewModel.saveFilteredImage()
+            }
+        )
         val filteredBitmap = viewModel.filteredBitmap.collectAsState()
         filteredBitmap.value?.let {
             EditImageMidContent(

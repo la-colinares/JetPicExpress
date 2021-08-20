@@ -58,7 +58,7 @@ private fun SavedImageContent(
             )
     ) {
         val topContentModifier = Modifier.align(Alignment.TopCenter)
-        val bottomContentModifier = Modifier.align(Alignment.TopCenter)
+        val bottomContentModifier = Modifier.align(Alignment.BottomCenter)
         SavedImageTopContent(
             uri = uri,
             photo = photo,

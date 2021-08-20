@@ -6,17 +6,10 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.DialogProperties
-import com.lacolinares.jetpicexpress.R
+import com.lacolinares.jetpicexpress.presentation.base.basecomponents.AppAlertDialog
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.components.EditImageMainContent
-import com.lacolinares.jetpicexpress.presentation.ui.theme.Shapes
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import com.lacolinares.jetpicexpress.util.extensions.ShowToast
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
@@ -65,12 +58,13 @@ fun PickImage(
         }
     }
 
-    imageBitmap?.let {
-        viewModel.setFilteredBitmap(it)
+    imageBitmap?.let { bitmap ->
+        viewModel.setFilteredBitmap(bitmap)
         EditImageMainContent(
-            originalBitmap = it,
+            originalBitmap = bitmap,
             gpuImage = gpuImage,
-            viewModel = viewModel
+            viewModel = viewModel,
+            navigator = navigator
         )
     }
 }
@@ -112,7 +106,10 @@ fun BackPressHandler(
 
     if (isBackPressInvoked) {
         if (hasFilteredImage) {
-            ShowDialog(
+            AppAlertDialog(
+                confirmButtonText = "Yes",
+                dismissButtonText = "Cancel",
+                message = "Do you want to discard changes?",
                 onConfirm = {
                     navigator.pop()
                 },
@@ -124,53 +121,5 @@ fun BackPressHandler(
             navigator.pop()
             isBackPressInvoked = false
         }
-    }
-}
-
-@Composable
-private fun ShowDialog(
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    var show by remember { mutableStateOf(true) }
-    if (show) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = {
-                Text(stringResource(id = R.string.app_name))
-            },
-            shape = Shapes.large,
-            text = {
-                Text(text = "Do you want to discard changes?")
-            },
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false
-            ),
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onConfirm.invoke()
-                        show = false
-                    }) {
-                    Text(
-                        text = "Yes",
-                        color = MaterialTheme.colors.secondary
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        onDismiss.invoke()
-                        show = false
-                    }) {
-                    Text(
-                        text = "Cancel",
-                        color = MaterialTheme.colors.secondary
-                    )
-                }
-            }
-        )
     }
 }

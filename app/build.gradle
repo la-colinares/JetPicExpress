@@ -63,7 +63,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist"
-    implementation "com.google.accompanist:accompanist-placeholder:$accompanist"
+    implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist"
 
     //ViewModel

@@ -10,8 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,10 +19,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
+import com.lacolinares.jetpicexpress.presentation.ui.theme.Dark200
 import com.lacolinares.jetpicexpress.presentation.ui.theme.DarkTransparent
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
+import com.lacolinares.jetpicexpress.presentation.ui.theme.White800
+import com.lacolinares.jetpicexpress.util.CoroutineThread
 import jp.co.cyberagent.android.gpuimage.GPUImage
+import kotlinx.coroutines.delay
 
 @Composable
 fun EditImageBottomContent(
@@ -64,12 +70,20 @@ private fun ImageFilter(
     filterName: String,
     onClick: () -> Unit
 ) {
+    var isVisible by remember { mutableStateOf(filterName.isNotEmpty()) }
     Box(
         modifier = Modifier
             .width(90.dp)
             .background(Light200)
             .padding(6.dp)
             .clip(RoundedCornerShape(8.dp))
+            .placeholder(
+                visible = isVisible,
+                highlight = PlaceholderHighlight.shimmer(
+                    highlightColor = Dark200
+                ),
+                color = White800
+            )
             .clickable(enabled = true) {
                 onClick.invoke()
             }
@@ -93,5 +107,9 @@ private fun ImageFilter(
             textAlign = TextAlign.Center,
             fontSize = 12.sp
         )
+    }
+    CoroutineThread.main {
+        delay(500)
+        isVisible = false
     }
 }
