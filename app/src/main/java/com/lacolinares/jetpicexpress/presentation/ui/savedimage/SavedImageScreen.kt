@@ -12,8 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.lacolinares.jetpicexpress.presentation.ui.savedimage.components.SavedImageBottomContent
 import com.lacolinares.jetpicexpress.presentation.ui.savedimage.components.SavedImageTopContent
-import com.lacolinares.jetpicexpress.util.extensions.getFileLastModified
-import com.lacolinares.jetpicexpress.util.extensions.getFileUriByName
+import com.lacolinares.jetpicexpress.util.FileHelper
 import com.lacolinares.jetpicexpress.util.extensions.toBitmap
 import com.lacolinares.jetpicexpress.util.extensions.toJpeg
 import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
@@ -21,12 +20,13 @@ import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
 @Composable
 fun SavedImageScreen(
     savedImageName: String,
+    fileHelper: FileHelper,
     navigator: AppNavigator
 ) {
     val context = LocalContext.current
     val imageName = savedImageName.toJpeg()
-    val dateModified = context.getFileLastModified(imageName)
-    val uri = context.getFileUriByName(imageName)
+    val dateModified = fileHelper.getFileLastModified(imageName)
+    val uri = fileHelper.getFileUriByName(imageName)
     val bitmap = uri.toBitmap(context)
     bitmap?.let {
         SavedImageContent(

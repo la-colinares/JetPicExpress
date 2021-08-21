@@ -1,11 +1,13 @@
 package com.lacolinares.jetpicexpress.presentation.ui.viewimages
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.lacolinares.jetpicexpress.data.viewimages.ViewImagesState
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.repository.ViewImagesRepository
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
@@ -21,6 +23,21 @@ class ViewImagesViewModel @Inject constructor(
 
     init {
         loadSavedImages()
+    }
+
+    fun removeFile(fileName: String) {
+        CoroutineThread.io {
+            delay(1000)
+            kotlin.runCatching {
+                viewImagesRepository.deleteImage(fileName)
+            }.onSuccess {
+                if (it){
+                    loadSavedImages()
+                }
+            }.onFailure {
+                Log.e("ViewImagesViewModel", "Error occur while deleting the file...")
+            }
+        }
     }
 
     private fun loadSavedImages(){

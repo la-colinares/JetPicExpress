@@ -9,12 +9,13 @@ import java.io.File
 import javax.inject.Inject
 
 class ViewImagesRepositoryImpl @Inject constructor(
-    val context: Context
+    val context: Context,
+    private val fileHelper: FileHelper,
 ) : ViewImagesRepository {
 
     override suspend fun loadSavedImages(): List<Pair<File, Bitmap>>? {
         val savedImages = ArrayList<Pair<File, Bitmap>>()
-        val mediaStorageDir = FileHelper.getMediaStorage(context)
+        val mediaStorageDir = fileHelper.getMediaStorage()
         mediaStorageDir.listFiles()?.let { data ->
             data.forEach { file ->
                 val uri = file.toUri()
@@ -23,7 +24,11 @@ class ViewImagesRepositoryImpl @Inject constructor(
                     savedImages.add(Pair(file, it))
                 }
             }
-            return savedImages
+            return savedImages.reversed()
         } ?: return null
+    }
+
+    override suspend fun deleteImage(fileName: String): Boolean {
+        return fileHelper.deleteFile(fileName)
     }
 }

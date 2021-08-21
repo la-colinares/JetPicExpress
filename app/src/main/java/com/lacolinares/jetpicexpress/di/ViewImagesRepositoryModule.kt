@@ -3,6 +3,7 @@ package com.lacolinares.jetpicexpress.di
 import android.content.Context
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.repository.ViewImagesRepository
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.repository.ViewImagesRepositoryImpl
+import com.lacolinares.jetpicexpress.util.FileHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,8 @@ class ViewImagesRepositoryModule {
     @Singleton
     fun provideViewImagesRepository(
         @ApplicationContext context: Context,
+        fileHelper: FileHelper,
     ): ViewImagesRepository {
-        return ViewImagesRepositoryImpl(context)
+        return ViewImagesRepositoryImpl(context, fileHelper)
     }
 }

@@ -1,43 +1,37 @@
 package com.lacolinares.jetpicexpress.presentation.ui.viewimages
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import com.lacolinares.jetpicexpress.R
-import com.lacolinares.jetpicexpress.presentation.ui.theme.Teal200
-import com.lacolinares.jetpicexpress.presentation.ui.viewimages.components.SavedImageItem
+import com.lacolinares.jetpicexpress.presentation.ui.viewimages.components.SavedImageFab
+import com.lacolinares.jetpicexpress.presentation.ui.viewimages.components.SavedImageSwipeToDelete
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.components.ViewImagesTopContent
+import com.lacolinares.jetpicexpress.util.FileHelper
 import com.lacolinares.jetpicexpress.util.extensions.ShowToast
-import com.lacolinares.jetpicexpress.util.extensions.getFileLastModified
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
 import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
-import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
 fun ViewImagesScreen(
     viewModel: ViewImagesViewModel,
+    fileHelper: FileHelper,
     navigator: AppNavigator
 ) {
     navigator.activity.setTransparentStatusBar(false)
 
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
@@ -47,63 +41,49 @@ fun ViewImagesScreen(
         if (!allImages.value.images.isNullOrEmpty()) {
             Column {
                 ViewImagesTopContent(navigator)
-
                 with(allImages.value) {
                     val loading by remember { mutableStateOf(isLoading) }
-                    if (loading) {
-                        Log.d("View Images", "Fetching Images...")
-                    }
+                    if (loading) Log.d("View Images", "Fetching Images...")
 
-                    images?.let {
+                    images?.let { imageItems ->
                         LazyColumn(state = listState) {
-                            items(it) { image ->
+                            itemsIndexed(
+                                items = imageItems,
+                                key = { _, item -> item.hashCode() }
+                            ) { _, image ->
+                                val fileName = image.first.name
+                                val state = rememberDismissState(
+                                    confirmStateChange = {
+                                        if (it == DismissValue.DismissedToStart) viewModel.removeFile(fileName)
+                                        true
+                                    }
+                                )
+
                                 val bitmap = image.second
-                                val title = image.first.name
-                                val date = context.getFileLastModified(title)
-                                SavedImageItem(
+                                val date = fileHelper.getFileLastModified(fileName)
+
+                                SavedImageSwipeToDelete(
                                     bitmap = bitmap,
-                                    title = title,
-                                    date = date
+                                    title = fileName,
+                                    date = date,
+                                    state = state
                                 )
                             }
                         }
                     } ?: kotlin.run {
-                        error?.let {
-                            ShowToast(message = it)
-                        }
+                        error?.let { ShowToast(message = it) }
                     }
                 }
             }
-            val isScrolledToBottom by remember {
-                derivedStateOf {
-                    listState.firstVisibleItemIndex > 0
-                }
-            }
+            val isScrolledToBottom by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
 
             if (isScrolledToBottom) {
-                AnimatedVisibility(
-                    visible = true,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                listState.animateScrollToItem(index = 0)
-                            }
-                        },
-                        shape = RoundedCornerShape(50),
-                        backgroundColor = Teal200,
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_up_24),
-                            contentDescription = "top_icon"
-                        )
-                    }
-                }
+                val modifier = Modifier.align(Alignment.BottomEnd)
+                SavedImageFab(
+                    modifier = modifier,
+                    listState = listState,
+                    coroutineScope = coroutineScope
+                )
             }
         } else {
             ViewImagesTopContent(navigator)
