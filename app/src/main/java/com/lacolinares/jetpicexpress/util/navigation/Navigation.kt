@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
@@ -22,12 +23,17 @@ import com.lacolinares.jetpicexpress.presentation.ui.savedimage.SavedImageScreen
 import com.lacolinares.jetpicexpress.presentation.ui.splash.SplashScreen
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.ViewImagesScreen
 import com.lacolinares.jetpicexpress.presentation.ui.viewimages.ViewImagesViewModel
+import com.lacolinares.jetpicexpress.util.FileHelper
 
 private const val PARAM_IMAGE_NAME = "imgName"
 
+@ExperimentalMaterialApi
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation(activity: Activity) {
+fun Navigation(
+    activity: Activity,
+    fileHelper: FileHelper,
+) {
     val navController = rememberAnimatedNavController()
 
     val navigator = AppNavigator(
@@ -46,7 +52,7 @@ fun Navigation(activity: Activity) {
         }
         customComposable(Screen.ViewImagesScreen.route) {
             val viewImagesViewModel = hiltViewModel<ViewImagesViewModel>()
-            ViewImagesScreen(viewModel = viewImagesViewModel, navigator = navigator)
+            ViewImagesScreen(viewModel = viewImagesViewModel, navigator = navigator, fileHelper = fileHelper)
         }
         customComposable(Screen.EditImageScreen.route) {
             val editImageViewModel = hiltViewModel<EditImageViewModel>()
@@ -62,7 +68,7 @@ fun Navigation(activity: Activity) {
             )
         ) { entry ->
             val imageName = entry.arguments?.getString(PARAM_IMAGE_NAME).orEmpty()
-            SavedImageScreen(savedImageName = imageName, navigator = navigator)
+            SavedImageScreen(savedImageName = imageName, navigator = navigator, fileHelper = fileHelper)
         }
     }
 }
