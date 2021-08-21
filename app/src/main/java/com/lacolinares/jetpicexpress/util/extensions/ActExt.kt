@@ -2,27 +2,13 @@ package com.lacolinares.jetpicexpress.util.extensions
 
 import android.app.Activity
 import android.graphics.Color
-import android.view.View
-import android.view.WindowManager
+import androidx.core.view.WindowCompat
 
-fun Activity.setTransparentStatusBar(transparent: Boolean= true){
-    if (transparent){
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+fun Activity.setTransparentStatusBar(transparent: Boolean = true) {
+    if (transparent) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = Color.TRANSPARENT
-    }else{
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
-    }
-}
-
-private fun Activity.setWindowFlag(bits: Int, on: Boolean) {
-    val win = window
-    val winParams = win.attributes
-    if (on) {
-        winParams.flags = winParams.flags or bits
     } else {
-        winParams.flags = winParams.flags and bits.inv()
+        WindowCompat.setDecorFitsSystemWindows(window, true)
     }
-    win.attributes = winParams
 }
