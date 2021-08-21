@@ -8,6 +8,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lacolinares.jetpicexpress.R
@@ -27,7 +28,7 @@ fun EditImageTopContent(
     TopAppBar(
         title = {
             Text(
-                text = "Apply Filter",
+                text = stringResource(id = R.string.apply_filter),
                 color = Light200,
                 fontSize = 18.sp
             )
@@ -67,9 +68,9 @@ fun EditImageTopContent(
     if (isBack) {
         if (hasFilteredImage) {
             AppAlertDialog(
-                confirmButtonText = "Yes",
-                dismissButtonText = "Cancel",
-                message = "Do you want to discard changes?",
+                confirmButtonText = stringResource(id = R.string.dialog_confirm_text),
+                dismissButtonText = stringResource(id = R.string.dialog_cancel_text),
+                message = stringResource(id = R.string.dialog_discard_warning_text),
                 onConfirm = {
                     navigator.pop()
                 },

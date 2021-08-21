@@ -1,4 +1,29 @@
 <resources>
     <string name="app_name">JetPic Express</string>
-    <string name="app_description">Improve your photo with filters</string>
+    <string name="app_short_description">Improve your photo with filters</string>
+    <string name="app_long_description">
+        \t A simple photo editing app that allows you to apply stunning filters and share it to the world.
+        This app was built using the latest Jetpack Compose UI for Modern Native Android UI development.
+    </string>
+    <string name="app_version">v1.0.0</string>
+    <string name="home_btn_edit_new_image">Edit New Image</string>
+    <string name="home_btn_view_images">View Images</string>
+    <string name="home_footer_powered_by">Powered by: </string>
+    <string name="home_footer_jetpack_compose">JetPack Compose</string>
+    <string name="label_name">Name:</string>
+    <string name="label_date">Date</string>
+    <string name="share">Share</string>
+    <string name="image_saved_successfully">Image Saved Successfully!</string>
+    <string name="back_to_tome">Back to home</string>
+    <string name="dialog_confirm_text">Yes</string>
+    <string name="dialog_cancel_text">Cancel</string>
+    <string name="dialog_discard_warning_text">Do you want to discard changes?</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="saved_images">"Saved Images"</string>
+    <string name="about_title">"About"</string>
+
+    <string name="tool_used">Tools/Tech Used:</string>
+    <string name="reference">Reference:</string>
+    <string name="source_code">Project Source Code:</string>
+    <string name="developer">Developer:</string>
 </resources>

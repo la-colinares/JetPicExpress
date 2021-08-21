@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.lacolinares.jetpicexpress.R
 import com.lacolinares.jetpicexpress.presentation.base.basecomponents.AppAlertDialog
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.components.EditImageMainContent
 import com.lacolinares.jetpicexpress.util.CoroutineThread
@@ -107,9 +109,9 @@ fun BackPressHandler(
     if (isBackPressInvoked) {
         if (hasFilteredImage) {
             AppAlertDialog(
-                confirmButtonText = "Yes",
-                dismissButtonText = "Cancel",
-                message = "Do you want to discard changes?",
+                confirmButtonText = stringResource(id = R.string.dialog_confirm_text),
+                dismissButtonText = stringResource(id = R.string.dialog_cancel_text),
+                message = stringResource(id = R.string.dialog_discard_warning_text),
                 onConfirm = {
                     navigator.pop()
                 },

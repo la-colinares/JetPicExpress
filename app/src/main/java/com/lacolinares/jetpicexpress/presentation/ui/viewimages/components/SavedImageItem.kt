@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
+import com.lacolinares.jetpicexpress.presentation.ui.theme.Shapes
 import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonMask
 import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonShimmer
 import com.lacolinares.jetpicexpress.util.CoroutineThread
@@ -36,7 +37,8 @@ fun SavedImageItem(
         highlight = PlaceholderHighlight.shimmer(
             highlightColor = SkeletonShimmer
         ),
-        color = SkeletonMask
+        color = SkeletonMask,
+        shape = Shapes.small
     )
 
     Column(

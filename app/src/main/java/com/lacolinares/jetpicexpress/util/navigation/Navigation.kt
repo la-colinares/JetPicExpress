@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +17,7 @@ import androidx.navigation.compose.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.lacolinares.jetpicexpress.presentation.ui.about.AboutScreen
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageScreen
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
 import com.lacolinares.jetpicexpress.presentation.ui.home.HomeScreen
@@ -27,6 +29,7 @@ import com.lacolinares.jetpicexpress.util.FileHelper
 
 private const val PARAM_IMAGE_NAME = "imgName"
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -44,11 +47,14 @@ fun Navigation(
         navController = navController,
         startDestination = Screen.SplashScreen.route
     ) {
-        customComposable(Screen.SplashScreen.route,) {
+        customComposable(Screen.SplashScreen.route) {
             SplashScreen(navigator = navigator)
         }
-        customComposable(Screen.HomeScreen.route,) {
+        customComposable(Screen.HomeScreen.route) {
             HomeScreen(navigator = navigator)
+        }
+        customComposable(Screen.AboutScreen.route){
+            AboutScreen(navigator = navigator)
         }
         customComposable(Screen.ViewImagesScreen.route) {
             val viewImagesViewModel = hiltViewModel<ViewImagesViewModel>()

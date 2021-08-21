@@ -21,7 +21,7 @@ fun HomeFooterBottomContent() {
         horizontalArrangement = Arrangement.End
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            FooterText("Powered by: ")
+            FooterText(stringResource(R.string.home_footer_powered_by))
             Image(
                 painter = painterResource(id = R.drawable.jetpack_compose_icon),
                 contentDescription = "jetpack icon",
@@ -30,7 +30,7 @@ fun HomeFooterBottomContent() {
                     .width(22.dp)
                     .padding(start = 4.dp, end = 4.dp)
             )
-            FooterText("JetPack Compose")
+            FooterText(stringResource(R.string.home_footer_jetpack_compose))
         }
     }
 }
@@ -44,7 +44,7 @@ fun HomeFooterTopContent() {
         fontWeight = FontWeight.Bold
     )
     Text(
-        text = stringResource(id = R.string.app_description),
+        text = stringResource(id = R.string.app_short_description),
         color = Color.White,
         fontSize = 16.sp
     )

@@ -3,15 +3,17 @@ package com.lacolinares.jetpicexpress.presentation.ui.home.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lacolinares.jetpicexpress.R
@@ -35,7 +37,7 @@ fun HomeButtonMenu(
             .weight(1f)
 
         Button(
-            text = "Edit New Image",
+            text = stringResource(R.string.home_btn_edit_new_image),
             textColor = Light200,
             buttonBackgroundColor = editButtonColor,
             modifier = modifier.padding(end = 8.dp)
@@ -44,7 +46,7 @@ fun HomeButtonMenu(
         }
 
         Button(
-            text = "View Images",
+            text = stringResource(R.string.home_btn_view_images),
             modifier = modifier.padding(start = 8.dp)
         ) {
             navigator.navigateTo(route = Screen.ViewImagesScreen.route)
@@ -65,8 +67,7 @@ private fun Button(
 ) {
     Button(
         onClick = { onClick.invoke() },
-        shape = RoundedCornerShape(50),
-        modifier = modifier,
+        modifier = modifier.clip(CircleShape),
         colors = buttonBackgroundColor
     ) {
         Text(

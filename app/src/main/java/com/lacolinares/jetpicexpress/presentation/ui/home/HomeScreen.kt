@@ -2,6 +2,7 @@ package com.lacolinares.jetpicexpress.presentation.ui.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeImageSl
 import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
 import com.lacolinares.jetpicexpress.util.navigation.AppNavigator
+import com.lacolinares.jetpicexpress.util.navigation.Screen
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -26,19 +28,22 @@ fun HomeScreen(
     navigator.activity.setTransparentStatusBar()
     Box {
         MainContent()
-        TopContent(this)
+        TopContent(navigator)
         BottomContent(this, navigator)
     }
 }
 
 @Composable
-private fun TopContent(boxScope: BoxScope) {
-    boxScope.apply {
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 48.dp, end = 16.dp)
-        ) {
+private fun BoxScope.TopContent(navigator: AppNavigator) {
+    Row(
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .padding(top = 48.dp, end = 16.dp)
+    ) {
+        IconButton(
+            onClick = {
+                navigator.navigateTo(Screen.AboutScreen.route)
+            }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_info_24),
                 contentDescription = "about",

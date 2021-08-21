@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,10 +22,7 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.EditImageViewModel
-import com.lacolinares.jetpicexpress.presentation.ui.theme.DarkTransparent
-import com.lacolinares.jetpicexpress.presentation.ui.theme.Light200
-import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonMask
-import com.lacolinares.jetpicexpress.presentation.ui.theme.SkeletonShimmer
+import com.lacolinares.jetpicexpress.presentation.ui.theme.*
 import com.lacolinares.jetpicexpress.util.CoroutineThread
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.coroutines.delay
@@ -76,13 +72,14 @@ private fun ImageFilter(
             .width(90.dp)
             .background(Light200)
             .padding(6.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(Shapes.medium)
             .placeholder(
                 visible = isVisible,
                 highlight = PlaceholderHighlight.shimmer(
                     highlightColor = SkeletonShimmer
                 ),
-                color = SkeletonMask
+                color = SkeletonMask,
+                shape = Shapes.small
             )
             .clickable(enabled = true) {
                 onClick.invoke()

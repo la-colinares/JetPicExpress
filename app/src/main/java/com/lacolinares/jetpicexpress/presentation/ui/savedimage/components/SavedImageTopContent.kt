@@ -5,15 +5,18 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,7 +56,7 @@ private fun ShareButton(
 ){
     val context = LocalContext.current
     Button(
-        text = "Share",
+        text = stringResource(R.string.share),
         textColor = Light200,
         buttonBackgroundColor = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(id = R.color.teal_200),
@@ -61,6 +64,7 @@ private fun ShareButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(end = 8.dp)
+            .clip(CircleShape)
     ) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -75,7 +79,7 @@ private fun ShareButton(
 @Composable
 private fun ColumnScope.Message(){
     Text(
-        text = "Image Saved Successfully!",
+        text = stringResource(R.string.image_saved_successfully),
         modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.CenterHorizontally),
@@ -92,12 +96,12 @@ private fun RowScope.PhotoInfo(
     Column(modifier = Modifier.align(Alignment.CenterVertically)) {
         Spacer(modifier = Modifier.height(16.dp))
         TitleAndDescription(
-            title = "Name:",
+            title = stringResource(R.string.label_name),
             description = imageName
         )
         Spacer(modifier = Modifier.height(16.dp))
         TitleAndDescription(
-            title = "Date:",
+            title = stringResource(R.string.label_date),
             description = dateModified
         )
     }

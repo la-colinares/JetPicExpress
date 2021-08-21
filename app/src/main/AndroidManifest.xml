@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lacolinares.jetpicexpress">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".BaseApp"
         android:icon="@mipmap/jetpic_dark_icon"
