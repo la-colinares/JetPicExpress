@@ -9,7 +9,7 @@ This app was built using the latest **Jetpack Compose** UI for Modern Native And
 ## Tools/Tech Used:
 * [Android Studio Arctic Fox | 2020.3.1](https://developer.android.com/studio)
 * [Kotlin](https://kotlinlang.org/docs/android-overview.html)
-* [Jetpack Ccompose](https://developer.android.com/jetpack/compose)
+* [Jetpack Compose](https://developer.android.com/jetpack/compose)
 * [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 * [GPUImage](https://github.com/cats-oss/android-gpuimage)
