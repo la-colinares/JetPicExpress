@@ -10,6 +10,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.lacolinares.jetpicexpress.presentation.ui.theme.JetPicExpressTheme
 import com.lacolinares.jetpicexpress.util.FileHelper
 import com.lacolinares.jetpicexpress.util.extensions.setTransparentStatusBar
@@ -31,14 +32,16 @@ class MainActivity : ComponentActivity() {
         setTransparentStatusBar()
         setContent {
             JetPicExpressTheme {
-                Surface(
-                    color = MaterialTheme.colors.background,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Navigation(
-                        activity = this,
-                        fileHelper = fileHelper
-                    )
+                ProvideWindowInsets {
+                    Surface(
+                        color = MaterialTheme.colors.background,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Navigation(
+                            activity = this,
+                            fileHelper = fileHelper
+                        )
+                    }
                 }
             }
         }

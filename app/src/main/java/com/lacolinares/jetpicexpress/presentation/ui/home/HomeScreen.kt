@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.lacolinares.jetpicexpress.R
 import com.lacolinares.jetpicexpress.presentation.ui.home.components.HomeButtonMenu
@@ -26,7 +27,9 @@ fun HomeScreen(
     navigator: AppNavigator
 ) {
     navigator.activity.setTransparentStatusBar()
-    Box {
+    Box(
+        modifier = Modifier.navigationBarsPadding()
+    ) {
         MainContent()
         TopContent(navigator)
         BottomContent(this, navigator)
